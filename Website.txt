@@ -1,0 +1,3 @@
+<header class="hero">
+  <h1>Gabis hausgemachte Marmelade</h1>
+</header>

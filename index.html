@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gabis Marmelade</title>
+    <style>
+      /* Top bar style: only top 2cm colored dark red, white Arial headline */
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #c98686; /* white page background */
+        color: #000000;
+      }
+
+      .topbar {
+        height: 3cm;
+        background-color: #670707; /* dark red */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        box-sizing: border-box;
+        color: #ffffff; /* white text */
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: clamp(1rem, 3.5vw, 2rem); /* small */
+        line-height: 1;
+        text-align: center;
+      }
+
+      main {
+        padding: 1rem;
+      }
+
+      .sorten {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .section-title {
+        color: #000000; /* dark red */
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 2.5rem 0 2rem; /* more space below heading */
+        font-size: clamp(2.4rem, 8.4vw, 4.8rem); /* 20% larger */
+        text-align: center;
+      }
+      .section-title::after {
+        content: "";
+        display: block;
+        width: 700px;
+        height: 2px;
+        background-color: #670707; /* topbar color */
+        margin: 0.75rem auto 0;
+      }
+      .sorten-grid {
+        display: block;
+        gap: 1.5rem;
+        margin-top: calc(1.25rem + 1cm); /* added 1cm gap between underline and first picture */
+        width: 100%;
+        max-width: 1000px; /* constrain grid so the heading centers above it */
+      }
+
+      .sorten-grid > figure {
+        position: relative; /* needed for absolutely positioned button */
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start; /* keep caption aligned with top of image */
+        gap: calc(1rem + 1cm); /* add 1cm more space between picture and caption/text/button */
+        margin: 0 0 2cm 0; /* 2cm space between pictures */
+        /* removed left shift to center content */
+      }
+
+      .sorten-grid img {
+        width: 35%; /* reduced from 40% */
+        height: auto;
+        display: block;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+
+      .sorten-grid figcaption {
+        width: 60%; /* keeping same width */
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: left;
+        margin-top: 0;
+        font-size: clamp(1.6rem, 5.6vw, 3.2rem); /* 20% smaller */
+        line-height: 1.05;
+        font-weight: 700; /* bold */
+        color: #000000; /* black */
+        font-family: Arial, Helvetica, sans-serif;
+        align-self: flex-start;
+      }
+
+      .caption-text {
+        white-space: nowrap; /* keep caption on one line */
+      }
+
+      /* Order button style */
+      .order-button {
+        position: absolute;
+        left: calc(56% + 3cm); /* place 3cm to the right of the image */
+        top: calc(50% + 3cm); /* moved 1cm further down */
+        transform: translateY(-50%); /* vertically center next to the image */
+        background-color: #670707; /* topbar color */
+        color: #ffffff;
+        border: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        padding: 1rem 2rem; /* doubled */
+        font-size: clamp(1.25rem, 3.5vw, 2.5rem);
+        border-radius: 12px;
+        cursor: pointer;
+      }
+
+      /* per-item action buttons hidden — unified bottom Bestellen used */
+      .per-item-order { display: none; }
+
+      /* unified bottom order bar */
+      .order-bottom {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 1rem;
+        background: rgba(255,255,255,0.95);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        z-index: 1100;
+      }
+
+      .order-summary { font-family: Arial, Helvetica, sans-serif; font-weight:700; }
+
+      .order-bottom .order-button {
+        position: static; /* override absolute for bottom button */
+        transform: none;
+      }
+
+      /* end-of-page order panel (static, visible at end of content) */
+      .order-end {
+        margin: 2rem auto 4rem;
+        max-width: 1000px;
+        background: #ffffff;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        justify-content: center;
+      }
+
+      .order-end .order-summary { font-weight:700; }
+
+      .order-end .order-button {
+        position: static;
+        transform: none;
+      }
+
+      /* disabled state for order button */
+      .order-button[disabled] {
+        background-color: #9a9a9a !important;
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .order-controls {
+        display: flex;
+        align-items: center;
+        gap: 1cm; /* 1cm space between label and input */
+        margin-top: 1cm; /* move "Menge:" down 1cm */
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* similar size to button */
+      }
+
+      .price-text {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* same size/style as Menge */
+        color: #000000;
+      }
+
+      .qty-label {
+        font-weight: 700;
+      }
+
+      .qty-input {
+        width: 4ch;
+        padding: 0.25rem;
+        font-size: clamp(1.25rem, 3.5vw, 2.5rem);
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      .order-button:focus {
+        outline: 3px solid rgba(103,7,7,0.4);
+        outline-offset: 2px;
+      }
+
+      .success-message {
+        position: fixed;
+        top: 3cm;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4CAF50;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        display: none;
+        z-index: 2000;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        margin-top: 1rem;
+      }
+
+      .success-message.show {
+        display: block;
+      }
+
+      .contact-bar {
+        background-color: #670707;
+        color: #ffffff;
+        padding: 2rem 1rem;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-top: 3rem;
+      }
+
+      .contact-bar h3 {
+        margin: 0 0 1.5rem 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .contact-link {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.3s;
+      }
+
+      .contact-link:hover {
+        opacity: 0.8;
+      }
+
+      .contact-icon {
+        width: 24px;
+        height: 24px;
+        fill: #ffffff;
+      }
+
+      @media (max-width: 700px) {
+        .sorten-grid > figure {
+          flex-direction: column;
+          align-items: center;
+          transform: none; /* stop shifting on small screens */
+        }
+        .sorten-grid img {
+          width: 100%;
+          height: clamp(260px, 40vh, 520px);
+        }
+        .sorten-grid figcaption {
+          width: 100%;
+          text-align: center;
+          align-items: center;
+        }
+        .caption-text {
+          white-space: normal;
+        }
+        .order-button {
+          align-self: center;
+          position: static;
+          transform: none; /* reset shift on small screens */
+          margin-top: 0.5rem;
+        }
+
+        .order-controls {
+          margin-top: 0.5rem;
+          gap: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Gabis hausgemachte Marmelade</h1>
+    </header>
+
+    <div class="success-message" id="successMessage">
+      Bestellung abgeschickt
+    </div>
+
+    <main>
+      <section class="sorten">
+        <h2 class="section-title">Sorten</h2>
+
+        <div class="sorten-grid">
+          <figure>
+            <!-- Left: Url2 (Waldfrucht-Orange) -->
+            <img src="images/url2.jpg" alt="Waldfrucht-Orange" onerror="this.onerror=null;this.src='images/url2.svg'">
+            <figcaption class="image-caption">
+              <span class="caption-text">Waldfrucht-Orange</span>
+              <div class="price-text">Preis pro Glas: 4,70€</div>
+              <div class="order-controls">
+                <label class="qty-label" for="qty-waldfrucht">Menge:</label>
+                <input class="qty-input" id="qty-waldfrucht" type="number" min="0" value="1" aria-label="Menge für Waldfrucht-Orange">
+              </div>
+              <!-- per-item buttons hidden; unified order bar used instead -->
+              <a class="order-button per-item-order" href="#" data-item="Waldfrucht-Orange" aria-label="Bestellen für Waldfrucht-Orange">Bestellen</a>
+            </figcaption>
+          </figure>
+
+          <figure>
+            <!-- Right: Url1 (Pflaume-Zimt) -->
+            <img src="images/url1.jpg" alt="Pflaume-Zimt" onerror="this.onerror=null;this.src='images/url1.svg'">
+            <figcaption class="image-caption">
+              <span class="caption-text">Pflaume-Zimt</span>
+              <div class="price-text">Preis pro Glas: 4,70€</div>
+              <div class="order-controls">
+                <label class="qty-label" for="qty-pflaume">Menge:</label>
+                <input class="qty-input" id="qty-pflaume" type="number" min="0" value="1" aria-label="Menge für Pflaume-Zimt">
+              </div>
+              <!-- per-item buttons hidden; unified order bar used instead -->
+              <a class="order-button per-item-order" href="#" data-item="Pflaume-Zimt" aria-label="Bestellen für Pflaume-Zimt">Bestellen</a>
+            </figcaption>
+          </figure>
+        </div>
+
+      </section>
+
+      <!-- Static end-of-page order panel: order both items together -->
+      <div class="order-end" aria-hidden="false">
+        <div class="order-summary">Warenkorb: <span id="summary-wald-end">Waldfrucht-Orange x <span id="sum-wald-end">1</span></span> &nbsp; <span id="summary-pflaume-end">Pflaume-Zimt x <span id="sum-pflaume-end">1</span></span></div>
+        <button id="order-end" class="order-button" aria-label="Bestellen (alle Artikel)" disabled>Bestellen</button>
+      </div>
+
+      <!-- Contact bar -->
+      <div class="contact-bar">
+        <h3>Meldet euch gerne bei Fragen!</h3>
+        <div class="contact-links">
+          <a href="https://wa.me/4917655262945" class="contact-link" target="_blank" rel="noopener noreferrer">
+            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            WhatsApp
+          </a>
+          <a href="sms:+4917655262945" class="contact-link">
+            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>
+            SMS/Telefon: +49 176 55262945
+          </a>
+          <a href="mailto:gabis.hausgemachte@gmail.com" class="contact-link">
+            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            gabis.hausgemachte@gmail.com
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function(){
+        // Check if order was just submitted
+        if(sessionStorage.getItem('orderSubmitted') === 'true'){
+          var successMsg = document.getElementById('successMessage');
+          successMsg.classList.add('show');
+          
+          // Hide message after 5 seconds
+          setTimeout(function(){
+            successMsg.classList.remove('show');
+            sessionStorage.removeItem('orderSubmitted');
+            sessionStorage.removeItem('orderEmail');
+          }, 5000);
+        }
+
+        // Update bottom summary as quantities change
+        function updateSummary(){
+          var q1 = document.getElementById('qty-waldfrucht');
+          var q2 = document.getElementById('qty-pflaume');
+          var sumW = document.getElementById('sum-wald');
+          var sumP = document.getElementById('sum-pflaume');
+          var sumWEnd = document.getElementById('sum-wald-end');
+          var sumPEnd = document.getElementById('sum-pflaume-end');
+          var qty1 = q1 ? (parseInt(q1.value,10) || 0) : 0;
+          var qty2 = q2 ? (parseInt(q2.value,10) || 0) : 0;
+          if(sumW) sumW.textContent = qty1;
+          if(sumP) sumP.textContent = qty2;
+          if(sumWEnd) sumWEnd.textContent = qty1;
+          if(sumPEnd) sumPEnd.textContent = qty2;
+          // disable unified order buttons when both quantities are zero
+          var orderBtn = document.getElementById('order-all');
+          if(orderBtn) {
+            orderBtn.disabled = (qty1 === 0 && qty2 === 0);
+          }
+          var orderEnd = document.getElementById('order-end');
+          if(orderEnd){
+            orderEnd.disabled = (qty1 === 0 && qty2 === 0);
+          }
+        }
+
+        document.querySelectorAll('.qty-input').forEach(function(inp){
+          inp.addEventListener('input', updateSummary);
+        });
+
+        // create fixed bottom order bar once (if not present) and attach its handler
+        (function createBottomBar(){
+          if (!document.querySelector('.order-bottom')){
+            var bottom = document.createElement('div');
+            bottom.className = 'order-bottom';
+            bottom.innerHTML = '<div class="order-summary">Warenkorb: <span id="summary-wald">Waldfrucht-Orange x <span id="sum-wald">1</span></span> &nbsp; <span id="summary-pflaume">Pflaume-Zimt x <span id="sum-pflaume">1</span></span></div>' +
+              '<button id="order-all" class="order-button" aria-label="Bestellen (alle Artikel)" disabled>Bestellen</button>';
+            document.body.appendChild(bottom);
+
+            // attach handler once
+            document.getElementById('order-all').addEventListener('click', function(e){
+              e.preventDefault();
+              var q1 = document.getElementById('qty-waldfrucht');
+              var q2 = document.getElementById('qty-pflaume');
+              var item1 = 'Waldfrucht-Orange';
+              var item2 = 'Pflaume-Zimt';
+              var qty1 = q1 ? (parseInt(q1.value,10)||0) : 0;
+              var qty2 = q2 ? (parseInt(q2.value,10)||0) : 0;
+              if(qty1 === 0 && qty2 === 0) return;
+              
+              // Build URL with only items that have quantity > 0
+              var params = [];
+              var itemCount = 0;
+              if(qty1 > 0) {
+                itemCount++;
+                params.push('item' + itemCount + '=' + encodeURIComponent(item1));
+                params.push('qty' + itemCount + '=' + encodeURIComponent(qty1));
+              }
+              if(qty2 > 0) {
+                itemCount++;
+                params.push('item' + itemCount + '=' + encodeURIComponent(item2));
+                params.push('qty' + itemCount + '=' + encodeURIComponent(qty2));
+              }
+              
+              var url = 'order.html?' + params.join('&');
+              window.location.href = url;
+            });
+          }
+        })();
+
+        // Handle end-of-page order button
+        var orderEndBtn = document.getElementById('order-end');
+        if(orderEndBtn) {
+          orderEndBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            var q1 = document.getElementById('qty-waldfrucht');
+            var q2 = document.getElementById('qty-pflaume');
+            var item1 = 'Waldfrucht-Orange';
+            var item2 = 'Pflaume-Zimt';
+            var qty1 = q1 ? (parseInt(q1.value,10)||0) : 0;
+            var qty2 = q2 ? (parseInt(q2.value,10)||0) : 0;
+            if(qty1 === 0 && qty2 === 0) return;
+            
+            // Build URL with only items that have quantity > 0
+            var params = [];
+            var itemCount = 0;
+            if(qty1 > 0) {
+              itemCount++;
+              params.push('item' + itemCount + '=' + encodeURIComponent(item1));
+              params.push('qty' + itemCount + '=' + encodeURIComponent(qty1));
+            }
+            if(qty2 > 0) {
+              itemCount++;
+              params.push('item' + itemCount + '=' + encodeURIComponent(item2));
+              params.push('qty' + itemCount + '=' + encodeURIComponent(qty2));
+            }
+            
+            var url = 'order.html?' + params.join('&');
+            window.location.href = url;
+          });
+        }
+
+        // ensure summary and button state are correct on load
+        updateSummary();
+
+        // Hide fixed bottom bar when static order panel is visible
+        var orderEndPanel = document.querySelector('.order-end');
+        var orderBottomBar = document.querySelector('.order-bottom');
+        
+        if(orderEndPanel && orderBottomBar) {
+          var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if(entry.isIntersecting) {
+                // Static panel is visible, hide bottom bar
+                orderBottomBar.style.display = 'none';
+              } else {
+                // Static panel not visible, show bottom bar
+                orderBottomBar.style.display = 'flex';
+              }
+            });
+          }, {
+            threshold: 0.1 // Trigger when at least 10% of the element is visible
+          });
+          
+          observer.observe(orderEndPanel);
+        }
+      })();
+    </script>
+  </body>
+</html>

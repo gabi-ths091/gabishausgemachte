@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lieferdetails</title>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function(){
+        emailjs.init("D8QzM1m8BNr9wAbNh"); // You'll replace this with your actual public key
+      })();
+    </script>
+    <style>
+      body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding-top: 3cm; background-color: #c98686; }
+
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        height: 3cm;
+        background-color: #670707;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        box-sizing: border-box;
+        color: #ffffff;
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: clamp(1rem, 3.5vw, 2rem);
+        line-height: 1;
+        text-align: center;
+      }
+
+      .success-message {
+        position: fixed;
+        top: 3cm;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4CAF50;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        display: none;
+        z-index: 2000;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+
+      .success-message.show {
+        display: block;
+      }
+
+      .card { max-width: 800px; margin: 2rem auto; padding: 1.5rem; border: 4px solid #670707; border-radius: 8px; background-color: #ffffff }
+      
+      .form-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #670707;
+        margin-bottom: 0.75rem;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group.full-width {
+        flex: 1 1 100%;
+      }
+
+      label {
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+        color: #000;
+      }
+
+      input[type="text"], textarea {
+        padding: 0.5rem;
+        border: 2px solid #670707;
+        border-radius: 6px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .radio-option input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .radio-option label {
+        font-weight: 400;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      .card-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+      }
+
+      .back, .submit-button {
+        display: inline-block;
+        color: #fff;
+        background: #670707;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        text-decoration: none;
+        border: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 0;
+        line-height: normal;
+        vertical-align: middle;
+      }
+
+      .submit-button:disabled {
+        background-color: #9a9a9a;
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      @media (max-width: 700px) {
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+        .form-row {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Gabis hausgemachte Marmelade</h1>
+    </header>
+
+    <div class="success-message" id="successMessage">
+      Bestellung abgeschickt
+    </div>
+
+    <div class="card">
+      <form id="deliveryForm">
+        <div class="form-section">
+          <div class="section-title">Lieferadresse:</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="street">Straße und Hausnummer *</label>
+              <input type="text" id="street" name="street" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">Ort *</label>
+              <input type="text" id="city" name="city" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Telefonnummer *</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-column">
+          <div class="form-section">
+            <div class="section-title">Wann soll ich sie vorbeibringen? *</div>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input type="radio" id="mon" name="delivery" value="Montag - 16:00 Uhr" required>
+                <label for="mon">Montag - 16:00 Uhr</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="tue" name="delivery" value="Dienstag - 08:00 Uhr" required>
+                <label for="tue">Dienstag - 08:00 Uhr</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="wed" name="delivery" value="Mittwoch - 17:00 Uhr" required>
+                <label for="wed">Mittwoch - 17:00 Uhr</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="fri" name="delivery" value="Freitag - 19:00 Uhr" required>
+                <label for="fri">Freitag - 19:00 Uhr</label>
+              </div>
+              <div class="radio-option">
+                <input type="radio" id="weekend" name="delivery" value="Wochenende (Bitte Uhrzeit bei Anmerkungen angeben)" required>
+                <label for="weekend">Wochenende (Bitte Uhrzeit bei "Anmerkungen" angeben)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Anmerkungen:</div>
+            <textarea id="notes" name="notes" maxlength="1000" placeholder="Optional (max. 200 Wörter)"></textarea>
+          </div>
+        </div>
+
+        <div class="card-buttons">
+          <a href="order.html" class="back">Zurück</a>
+          <button type="submit" id="submitBtn" class="submit-button" disabled>Bestellung abschicken</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      (function(){
+        var form = document.getElementById('deliveryForm');
+        var submitBtn = document.getElementById('submitBtn');
+        var street = document.getElementById('street');
+        var city = document.getElementById('city');
+        var phone = document.getElementById('phone');
+        var deliveryOptions = document.getElementsByName('delivery');
+
+        // Get order details from URL
+        var params = new URLSearchParams(location.search);
+        var orderDetails = {
+          items: [],
+          total: 0
+        };
+        
+        for(var i=1; i<=5; i++){
+          var item = params.get('item'+i);
+          var qty = params.get('qty'+i);
+          if(item && qty){
+            orderDetails.items.push({name: item, qty: parseInt(qty,10)});
+            orderDetails.total += parseInt(qty,10) * 4.7;
+          }
+        }
+
+        // Check if all required fields are filled
+        function validateForm(){
+          var streetFilled = street.value.trim() !== '';
+          var cityFilled = city.value.trim() !== '';
+          var phoneFilled = phone.value.trim() !== '';
+          var deliverySelected = Array.from(deliveryOptions).some(function(radio){ return radio.checked; });
+          
+          submitBtn.disabled = !(streetFilled && cityFilled && phoneFilled && deliverySelected);
+        }
+
+        // Add event listeners
+        street.addEventListener('input', validateForm);
+        city.addEventListener('input', validateForm);
+        phone.addEventListener('input', validateForm);
+        deliveryOptions.forEach(function(radio){
+          radio.addEventListener('change', validateForm);
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          
+          var selectedDelivery = Array.from(deliveryOptions).find(function(radio){ return radio.checked; });
+          var notes = document.getElementById('notes').value;
+
+          // Prepare order summary
+          var orderSummary = '';
+          orderDetails.items.forEach(function(item){
+            orderSummary += item.name + ' x ' + item.qty + ' (à 4,70€)\n';
+          });
+
+          // Prepare EmailJS template parameters
+          var templateParams = {
+            to_email: 'gabis.hausgemachte@gmail.com',
+            order_items: orderSummary,
+            total_price: orderDetails.total.toFixed(2).replace('.',',') + '€',
+            street: street.value,
+            city: city.value,
+            phone: phone.value,
+            delivery_time: selectedDelivery.value,
+            notes: notes.trim() !== '' ? notes : 'Keine Anmerkungen'
+          };
+
+          // Disable submit button while sending
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Wird gesendet...';
+
+          // Send email using EmailJS
+          emailjs.send('service_mr8t8f4', 'template_ldh9vpj', templateParams)
+            .then(function(response) {
+              console.log('SUCCESS!', response.status, response.text);
+              
+              // Store success flag
+              sessionStorage.setItem('orderSubmitted', 'true');
+
+              // Redirect to index
+              window.location.href = 'index.html';
+            }, function(error) {
+              console.log('FAILED...', error);
+              alert('Fehler beim Senden der Bestellung. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Bestellung abschicken';
+            });
+        });
+
+        // Initial validation
+        validateForm();
+      })();
+    </script>
+  </body>
+</html>

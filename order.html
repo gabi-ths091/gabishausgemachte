@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bestellung</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function(){
+        emailjs.init("YOUR_PUBLIC_KEY");
+      })();
+    </script>
+    <style>
+      /* Match main site topbar and background; make topbar fixed at very top */
+      body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding-top: 3cm; background-color: #c98686; }
+
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        height: 3cm;
+        background-color: #670707; /* dark red */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        box-sizing: border-box;
+        color: #ffffff; /* white text */
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: clamp(1rem, 3.5vw, 2rem);
+        line-height: 1;
+        text-align: center;
+      }
+
+      .card { max-width: 640px; margin: 2rem auto; padding: 1.5rem; border: 4px solid #670707; border-radius: 8px; background-color: #ffffff }
+      
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        gap: 1rem;
+      }
+
+      .item { font-size: 2rem; font-weight: 700; color: #670707; margin: 0; }
+      .qty { margin-top: 0.75rem; font-weight: 700; }
+      .price { margin-top: 0.75rem; }
+      .total { margin-top: 1rem; font-size: 1.25rem; font-weight: 700; }
+      
+      .payment-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #670707;
+        margin-top: 1rem;
+        line-height: 1.2;
+      }
+
+      .back, .weiter-button {
+        display: inline-block;
+        color: #fff;
+        background: #670707;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        text-decoration: none;
+        border: none;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 0;
+        line-height: normal;
+        vertical-align: middle;
+      }
+
+      .card-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Gabis hausgemachte Marmelade</h1>
+    </header>
+
+    <div class="card">
+      <div id="content">
+        <div class="card-header">
+          <div class="item">Bestellung</div>
+        </div>
+        <div id="details">Lade …</div>
+        <div class="payment-text">Bezahlung in Bar bei der Lieferung!</div>
+      </div>
+      <div class="card-buttons">
+        <a href="index.html" class="back">Zurück</a>
+        <a href="#" id="weiterBtn" class="weiter-button">Weiter</a>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        var params = new URLSearchParams(location.search);
+        var items = [];
+        var pricePer = 4.7;
+        // collect item1/qty1, item2/qty2, ...
+        for(var i=1;i<=5;i++){
+          var it = params.get('item'+i);
+          var q = params.get('qty'+i);
+          if(it){ items.push({name: it, qty: parseInt(q,10)||1}); }
+        }
+        // fallback for old single-item param
+        if(items.length===0){
+          var it = params.get('item');
+          var q = params.get('qty');
+          if(it){ items.push({name:it, qty: parseInt(q,10)||1}); }
+        }
+        var details = document.getElementById('details');
+        function formatEuro(n){ return n.toFixed(2).replace('.',',') + '€'; }
+        if(items.length===0){
+          details.innerHTML = '<div class="qty">Keine Artikel ausgewählt</div>';
+        } else {
+          var html = '';
+          var total = 0;
+          items.forEach(function(it){
+            var line = '<div class="qty">Artikel: <strong>' + escapeHtml(it.name) + '</strong> &ndash; Anzahl: <strong>' + it.qty + '</strong></div>' +
+                       '<div class="price">Preis pro Glas: ' + formatEuro(pricePer) + '</div>';
+            html += '<div style="margin-bottom:0.75rem;">' + line + '</div>';
+            total += pricePer * it.qty;
+          });
+          html += '<div class="total">Gesamt: ' + formatEuro(total) + '</div>';
+          details.innerHTML = html;
+        }
+        function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]; }); }
+
+        // Handle "Weiter" button to pass order details
+        document.getElementById('weiterBtn').addEventListener('click', function(e){
+          e.preventDefault();
+          var currentParams = new URLSearchParams(location.search);
+          var url = 'weiter.html?' + currentParams.toString();
+          window.location.href = url;
+        });
+      })();
+    </script>
+  </body>
+</html>
