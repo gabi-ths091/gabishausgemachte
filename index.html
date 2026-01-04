@@ -95,10 +95,15 @@
         color: #000000; /* black */
         font-family: Arial, Helvetica, sans-serif;
         align-self: flex-start;
+        position: relative; /* for absolute positioning of children */
       }
 
       .caption-text {
         white-space: nowrap; /* keep caption on one line */
+        font-size: clamp(2rem, 7vw, 4rem); /* bigger than price */
+        font-weight: 700; /* bold */
+        display: block;
+        margin-bottom: 1rem; /* space below caption */
       }
 
       /* Order button style */
@@ -176,10 +181,12 @@
         display: flex;
         align-items: center;
         gap: 1cm; /* 1cm space between label and input */
-        margin-top: 1cm; /* move "Menge:" down 1cm */
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
         font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* similar size to button */
+        position: absolute;
+        top: calc(clamp(2rem, 7vw, 4rem) + 2rem + clamp(1.25rem, 3.5vw, 2.5rem) + 1cm); /* 1cm below price */
+        left: calc(35% + 2cm); /* 2cm to the right of image */
       }
 
       .price-text {
@@ -187,6 +194,10 @@
         font-weight: 700;
         font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* same size/style as Menge */
         color: #000000;
+        position: absolute;
+        top: calc(clamp(2rem, 7vw, 4rem) + 2rem); /* 1cm below caption (caption height + margin-bottom + 1cm) */
+        left: calc(35% + 2cm); /* 2cm to the right of image */
+        white-space: nowrap;
       }
 
       .qty-label {
