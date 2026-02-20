@@ -183,7 +183,7 @@
     </div>
 
     <div class="card">
-      <form id="deliveryForm">
+      <form autocomplete=" on\ id="deliveryForm">
         <div class="form-section">
           <div class="section-title">Lieferadresse:</div>
           <div class="form-row">
@@ -255,6 +255,26 @@
         var phone = document.getElementById('phone');
         var deliveryOptions = document.getElementsByName('delivery');
 
+        // Autofill saved address and phone from localStorage
+        function loadSavedData(){
+          var savedStreet = localStorage.getItem('deliveryStreet');
+          var savedCity = localStorage.getItem('deliveryCity');
+          var savedPhone = localStorage.getItem('deliveryPhone');
+          
+          if(savedStreet) street.value = savedStreet;
+          if(savedCity) city.value = savedCity;
+          if(savedPhone) phone.value = savedPhone;
+          
+          validateForm();
+        }
+
+        // Save data to localStorage on input
+        function saveData(){
+          localStorage.setItem('deliveryStreet', street.value);
+          localStorage.setItem('deliveryCity', city.value);
+          localStorage.setItem('deliveryPhone', phone.value);
+        }
+
         // Get order details from URL
         var params = new URLSearchParams(location.search);
         var orderDetails = {
@@ -281,10 +301,19 @@
           submitBtn.disabled = !(streetFilled && cityFilled && phoneFilled && deliverySelected);
         }
 
-        // Add event listeners
-        street.addEventListener('input', validateForm);
-        city.addEventListener('input', validateForm);
-        phone.addEventListener('input', validateForm);
+        // Add event listeners for validation and saving
+        street.addEventListener('input', function(){
+          saveData();
+          validateForm();
+        });
+        city.addEventListener('input', function(){
+          saveData();
+          validateForm();
+        });
+        phone.addEventListener('input', function(){
+          saveData();
+          validateForm();
+        });
         deliveryOptions.forEach(function(radio){
           radio.addEventListener('change', validateForm);
         });
@@ -342,3 +371,9 @@
     </script>
   </body>
 </html>
+
+
+
+
+
+
