@@ -83,6 +83,7 @@
         border-radius: 8px;
         object-fit: cover;
         transform: rotate(90deg);
+        transform-origin: center;
       }
 
       .sorten-grid figcaption {
@@ -187,9 +188,8 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
         font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* similar size to button */
-        position: absolute;
-        top: calc(clamp(2rem, 7vw, 4rem) + 2rem + clamp(1.25rem, 3.5vw, 2.5rem) + 1cm); /* 1cm below price */
-        left: calc(35% + 2cm); /* 2cm to the right of image */
+        position: static;
+        margin-top: 0.5rem;
       }
 
       .price-text {
@@ -197,10 +197,9 @@
         font-weight: 700;
         font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* same size/style as Menge */
         color: #000000;
-        position: absolute;
-        top: calc(clamp(2rem, 7vw, 4rem) + 2rem); /* 1cm below caption (caption height + margin-bottom + 1cm) */
-        left: calc(35% + 2cm); /* 2cm to the right of image */
+        position: static;
         white-space: nowrap;
+        margin-top: 0.5rem;
       }
 
       .qty-label {
