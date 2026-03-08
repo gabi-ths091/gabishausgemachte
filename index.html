@@ -320,6 +320,51 @@
           gap: 0.5rem;
         }
       }
+
+      @media (max-width: 900px) and (orientation: landscape) {
+        .sorten-grid > figure {
+          flex-direction: row;
+          align-items: flex-start;
+          margin: 0 0 5cm 0;
+          margin-left: 2cm;
+          gap: 2cm;
+        }
+        .sorten-grid img {
+          width: 40%;
+          max-height: 90vh;
+          margin-left: -2cm;
+          margin-top: 0;
+        }
+        .sorten-grid figcaption {
+          width: 50%;
+          text-align: left;
+          align-items: flex-start;
+          margin-top: -2cm;
+          margin-left: 2cm;
+          flex-direction: column;
+        }
+        .caption-text {
+          white-space: normal;
+          text-align: left;
+        }
+        .price-text {
+          position: static;
+          text-align: left;
+          margin-top: 0.5rem;
+        }
+        .order-controls {
+          position: static;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-top: 0.5rem;
+        }
+        .order-button {
+          align-self: flex-start;
+          position: static;
+          transform: none;
+          margin-top: 0.5rem;
+        }
+      }
     </style>
   </head>
   <body>
