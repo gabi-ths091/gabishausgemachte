@@ -4,7 +4,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Cache-Control" content="max-age=86400, public">
     <title>Gabis Marmelade</title>
     <style>
       /* Top bar style: only top 2cm colored dark red, white Arial headline */
@@ -289,9 +288,7 @@
         }
         .sorten-grid img {
           width: 100%;
-          height: auto;
-          transform: rotate(90deg);
-          transform-origin: center;
+          height: clamp(260px, 40vh, 520px);
         }
         .sorten-grid figcaption {
           width: 100%;
@@ -310,12 +307,12 @@
 
         .price-text {
           position: static;
-          margin-top: 0.5rem;
+          margin-top: -1.5cm;
         }
 
         .order-controls {
           position: static;
-          margin-top: 0.5rem;
+          margin-top: -1cm;
           gap: 0.5rem;
         }
       }
@@ -337,10 +334,7 @@
         <div class="sorten-grid">
           <figure>
             <!-- Left: Url2 (Waldfrucht-Orange) -->
-            <picture>
-              <source srcset="images/url2.webp 1x, images/url2@2x.webp 2x" type="image/webp">
-              <img src="images/url2.jpg" srcset="images/url2@2x.jpg 2x" alt="Waldfrucht-Orange" width="400" height="400" decoding="async">
-            </picture>
+            <img src="images/url2.jpg" alt="Waldfrucht-Orange"
             <figcaption class="image-caption">
               <span class="caption-text">Waldfrucht-Orange</span>
               <div class="price-text">Preis pro Glas: 4,70€</div>
@@ -355,10 +349,7 @@
 
           <figure>
             <!-- Right: Url1 (Pflaume-Zimt) -->
-            <picture>
-              <source srcset="images/url1.webp 1x, images/url1@2x.webp 2x" type="image/webp">
-              <img src="images/url1.jpg" srcset="images/url1@2x.jpg 2x" alt="Pflaume-Zimt" width="400" height="400" decoding="async">
-            </picture>
+            <img src="images/url1.jpg" alt="Pflaume-Zimt"
             <figcaption class="image-caption">
               <span class="caption-text">Pflaume-Zimt</span>
               <div class="price-text">Preis pro Glas: 4,70€</div>
