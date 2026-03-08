@@ -81,8 +81,6 @@
         display: block;
         border-radius: 8px;
         object-fit: cover;
-        transform: rotate(90deg);
-        transform-origin: center;
       }
 
       .sorten-grid figcaption {
@@ -289,11 +287,8 @@
           transform: none; /* stop shifting on small screens */
         }
         .sorten-grid img {
-          width: auto;
-          height: 100vw;
-          max-height: 90vh;
-          transform: rotate(90deg);
-          transform-origin: center;
+          width: 100%;
+          height: clamp(260px, 40vh, 520px);
         }
         .sorten-grid figcaption {
           width: 100%;
@@ -307,46 +302,6 @@
           align-self: center;
           position: static;
           transform: none; /* reset shift on small screens */
-          margin-top: 0.5rem;
-        }
-
-        .price-text {
-          position: static;
-          margin-top: -1.5cm;
-        }
-
-        .order-controls {
-          position: static;
-          margin-top: -1cm;
-          gap: 0.5rem;
-        }
-      }
-
-      @media (max-width: 900px) and (orientation: landscape) {
-        .sorten-grid > figure {
-          flex-direction: column;
-          align-items: center;
-          transform: none;
-        }
-        .sorten-grid img {
-          width: auto;
-          height: 100vh;
-          max-width: 90vw;
-          transform: rotate(90deg);
-          transform-origin: center;
-        }
-        .sorten-grid figcaption {
-          width: 100%;
-          text-align: center;
-          align-items: center;
-        }
-        .caption-text {
-          white-space: normal;
-        }
-        .order-button {
-          align-self: center;
-          position: static;
-          transform: none;
           margin-top: 0.5rem;
         }
 
