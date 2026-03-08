@@ -288,9 +288,11 @@
           transform: none; /* stop shifting on small screens */
         }
         .sorten-grid img {
-          width: 100%;
-          height: clamp(260px, 40vh, 520px);
+          width: auto;
+          height: 100vw;
+          max-height: 90vh;
           transform: rotate(90deg);
+          transform-origin: center;
         }
         .sorten-grid figcaption {
           width: 100%;
