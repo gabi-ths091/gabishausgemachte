@@ -179,7 +179,7 @@
     </header>
 
     <div class="success-message" id="successMessage">
-      Bestellung abgeschickt
+      Bestellung abgeschickt!
     </div>
 
     <div class="card">
@@ -357,9 +357,10 @@
 
               // Redirect to index
               window.location.href = 'index.html';
+              window.location.href = 'index.html';
             }, function(error) {
               console.log('FAILED...', error);
-              alert('Fehler beim Senden der Bestellung. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.');
+              alert('Fehler beim Senden der Bestellung. Bitte versuchen Sie es erneut oder kontaktieren Sie mich direkt.');
               submitBtn.disabled = false;
               submitBtn.textContent = 'Bestellung abschicken';
             });

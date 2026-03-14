@@ -557,7 +557,7 @@
           }
         }
 
-        document.querySelectorAll('.qty-input').forEach(function(inp){
+        document.querySelectorAll('.qty-input1,.qty-input2').forEach(function(inp){
           inp.addEventListener('input', updateSummary);
         });
 
@@ -634,6 +634,7 @@
         }
 
         // ensure summary and button state are correct on load
+        updateSummary();
         updateSummary();
 
         // Hide fixed bottom bar when static order panel is visible
