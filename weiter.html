@@ -321,6 +321,7 @@
         // Handle form submission
         form.addEventListener('submit', function(e){
           e.preventDefault();
+          console.log("Formular wurde abgeschickt");
           
           var selectedDelivery = Array.from(deliveryOptions).find(function(radio){ return radio.checked; });
           var notes = document.getElementById('notes').value;
