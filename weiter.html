@@ -183,7 +183,7 @@
     </div>
 
     <div class="card">
-      <form autocomplete=" on\ id="deliveryForm">
+      <form autocomplete="on" id="deliveryForm">
         <div class="form-section">
           <div class="section-title">Lieferadresse:</div>
           <div class="form-row">
@@ -314,7 +314,7 @@
           saveData();
           validateForm();
         });
-        deliveryOptions.forEach(function(radio){
+        Array.from(deliveryOptions).forEach(function(radio){
           radio.addEventListener('change', validateForm);
         });
 
@@ -357,7 +357,6 @@
               sessionStorage.setItem('orderSubmitted', 'true');
 
               // Redirect to index
-              window.location.href = 'index.html';
               window.location.href = 'index.html';
             }, function(error) {
               console.log('FAILED...', error);
