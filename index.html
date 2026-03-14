@@ -52,8 +52,8 @@
       .section-title::after {
         content: "";
         display: block;
-        width: 700px;
-        height: 2px;
+        width: 800px;
+        height: 3px;
         background-color: #670707; /* topbar color */
         margin: 0.75rem auto 0;
       }
@@ -68,10 +68,10 @@
       .sorten-grid > figure {
         position: relative; /* needed for absolutely positioned button */
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        align-items: flex-start; /* keep caption aligned with top of image */
         gap: calc(1rem + 1cm); /* add 1cm more space between picture and caption/text/button */
-        margin: 0 0 8cm 0; /* large space between picture groups */
+        margin: 0 0 5cm 0; /* large space between picture groups */
         /* removed left shift to center content */
       }
 
@@ -84,32 +84,42 @@
         object-fit: cover;
         transform: rotate(90deg);
         transform-origin: center;
+        margin-left: 2cm; /* shift left 1cm to balance caption space */
       }
 
       .sorten-grid figcaption {
-        width: 100%;
+        width: 60%; /* keep text container to the right of image */
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        text-align: center;
+        text-align: left;
         margin-top: 2cm;
         font-size: clamp(1.6rem, 5.6vw, 3.2rem); /* 20% smaller */
         line-height: 1.05;
         font-weight: 700; /* bold */
         color: #000000; /* black */
         font-family: Arial, Helvetica, sans-serif;
-        align-self: center;
+        align-self: flex-start;
         position: relative; /* for absolute positioning of children */
       }
 
-      .caption-text {
+      .caption-text1 {
         white-space: nowrap; /* keep caption on one line */
-        font-size: clamp(2rem, 7vw, 4rem); /* bigger than price */
-        font-weight: 700; /* bold */
+        font-size: clamp(1rem, 5vw, 3rem); /* bigger than price */
+        font-weight: 600; /* bold */
         display: block;
-        margin-bottom: 1rem; /* space below caption */
+        margin-left: -1cm ; /* space below caption */
+        margin-top: -1cm;
       }
 
+      .caption-text2 {
+        white-space: nowrap; /* keep caption on one line */
+        font-size: clamp(1rem, 5vw, 3rem); /* bigger than price */
+        font-weight: 600; /* bold */
+        display: block;
+        margin-left: -1cm ; /* space below caption */
+        margin-top: -1cm;
+        }
       /* Order button style */
       .order-button {
         position: absolute;
@@ -127,6 +137,7 @@
         cursor: pointer;
       }
 
+      
       /* per-item action buttons hidden — unified bottom Bestellen used */
       .per-item-order { display: none; }
 
@@ -189,31 +200,63 @@
         font-weight: 700;
         font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* similar size to button */
         position: static;
-        margin-top: 0.5rem;
+        margin-top: 3cm; /* moved down 3cm */
+        margin-left: -15cm; /* shift left 15cm */
       }
 
-      .price-text {
+
+      .price-text1 {
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
-        font-size: clamp(1.25rem, 3.5vw, 2.5rem); /* same size/style as Menge */
+        font-size: clamp(1.25rem, 3.5vw, 2rem); /* same size/style as Menge */
         color: #000000;
         position: static;
         white-space: nowrap;
-        margin-top: 0.5rem;
+        margin-top: 1cm; /* moved down 1.5cm */
+        margin-left: -12.3cm; /* moved left 15cm */
       }
 
-      .qty-label {
+       .price-text2 {
+        font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
+        font-size: clamp(1.25rem, 3.5vw, 2rem); /* same size/style as Menge */
+        color: #000000;
+        position: static;
+        white-space: nowrap;
+        margin-top: 1cm; /* moved down 1.5cm */
+        margin-left: -9.1cm; /* moved left 15cm */
+      }
+      .qty-label1 {
+        font-weight: 600;
+        font-size: clamp(1.25rem, 3.5vw, 2rem);
+        margin-left: 5.25cm;
+        margin-top: -0.5cm;
       }
 
-      .qty-input {
+      .qty-label2 {
+        font-weight: 600;
+        font-size: clamp(1.25rem, 3.5vw, 2rem);
+        margin-left: 5.25cm;
+        margin-top: -0.5cm;
+      }
+
+      .qty-input1 {
         width: 4ch;
         padding: 0.25rem;
-        font-size: clamp(1.25rem, 3.5vw, 2.5rem);
+        font-size: clamp(1.25rem, 3.5vw, 1rem);
         border-radius: 6px;
         border: 1px solid #ccc;
+        margin-top: -0.5cm;
       }
 
+      .qty-input2 {
+        width: 4ch;
+        padding: 0.25rem;
+        font-size: clamp(1.25rem, 3.5vw, 1rem);
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-top: -0.5cm;
+      }
       .order-button:focus {
         outline: 3px solid rgba(103,7,7,0.4);
         outline-offset: 2px;
@@ -285,7 +328,7 @@
         .sorten-grid > figure {
           flex-direction: column;
           align-items: center;
-          transform: none; /* stop shifting on small screens */
+          transform:none; /* stop shifting on small screens */
           margin: 0 0 5cm 0;
         }
         .sorten-grid img {
@@ -301,6 +344,9 @@
         }
         .caption-text {
           white-space: normal;
+          margin-top: 1.5cm;
+          margin-left: 0.3cm;
+          text-align: center;
         }
         .order-button {
           align-self: center;
@@ -311,13 +357,16 @@
 
         .price-text {
           position: static;
-          margin-top: -1.5cm;
+          margin-left: 0cm;
+          margin-top: -1cm;
         }
 
         .order-controls {
           position: static;
           margin-top: -1cm;
           gap: 0.5rem;
+          margin-left: -3cm;
+          text-align: center;
         }
       }
 
@@ -385,11 +434,11 @@
             <!-- Left: Url2 (Waldfrucht-Orange) -->
             <img src="images/url2.jpg" alt="Waldfrucht-Orange"
             <figcaption class="image-caption">
-              <span class="caption-text">Waldfrucht-Orange</span>
-              <div class="price-text">Preis pro Glas: 4,70€</div>
+              <span class="caption-text1">Waldfrucht-Orange</span>
+              <div class="price-text1">Preis pro Glas: 4,70€</div>
               <div class="order-controls">
-                <label class="qty-label" for="qty-waldfrucht">Menge:</label>
-                <input class="qty-input" id="qty-waldfrucht" type="number" min="0" value="1" aria-label="Menge für Waldfrucht-Orange">
+                <label class="qty-label1" for="qty-waldfrucht">Menge:</label>
+                <input class="qty-input1" id="qty-waldfrucht" type="number" min="0" value="1" aria-label="Menge für Waldfrucht-Orange">
               </div>
               <!-- per-item buttons hidden; unified order bar used instead -->
               <a class="order-button per-item-order" href="#" data-item="Waldfrucht-Orange" aria-label="Bestellen für Waldfrucht-Orange">Bestellen</a>
@@ -400,11 +449,11 @@
             <!-- Right: Url1 (Pflaume-Zimt) -->
             <img src="images/url1.jpg" alt="Pflaume-Zimt"
             <figcaption class="image-caption">
-              <span class="caption-text">Pflaume-Zimt</span>
-              <div class="price-text">Preis pro Glas: 4,70€</div>
+              <span class="caption-text2">Pflaume-Zimt</span>
+              <div class="price-text2">Preis pro Glas: 4,70€</div>
               <div class="order-controls">
-                <label class="qty-label" for="qty-pflaume">Menge:</label>
-                <input class="qty-input" id="qty-pflaume" type="number" min="0" value="1" aria-label="Menge für Pflaume-Zimt">
+                <label class="qty-label2" for="qty-pflaume">Menge:</label>
+                <input class="qty-input2" id="qty-pflaume" type="number" min="0" value="1" aria-label="Menge für Pflaume-Zimt">
               </div>
               <!-- per-item buttons hidden; unified order bar used instead -->
               <a class="order-button per-item-order" href="#" data-item="Pflaume-Zimt" aria-label="Bestellen für Pflaume-Zimt">Bestellen</a>
