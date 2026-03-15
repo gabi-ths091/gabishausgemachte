@@ -434,6 +434,15 @@
           margin-left: 2cm;
           gap: 2cm;
         }
+        .section-title::after {
+        content: "";
+        display: block;
+        width: 600px;
+        height: 3px;
+        background-color: #670707; /* topbar color */
+        margin: 0.75rem auto 0;
+        }
+
         .sorten-grid img {
           width: 40%;
           max-height: 90vh;
@@ -451,25 +460,57 @@
         .caption-text1 {
           white-space: normal;
           text-align: left;
+          margin-left: -0.3cm;
         }
 
         .caption-text2 {
           white-space: normal;
           text-align: left;
+          margin-left: -0.3cm;
         }
 
         .price-text1 {
           position: static;
           text-align: left;
-          margin-top: 0.5rem;
+          margin-top: 0.6rem;
+          margin-left: 1.5cm;
         }
 
         .price-text2 {
           position: static;
           text-align: left;
-          margin-top: 0.5rem;
+          margin-top: 0.6rem;
+          margin-left: 1.5cm;
+        }
+       .qty-label1 {
+        margin-left: 1.5cm;
+        margin-top: 2cm;
+         }
+
+        .qty-label2 {
+        margin-left: 1.5cm;
+        margin-top: 2cm;
         }
 
+        .qty-input1 {
+        width: 4ch;
+        padding: 0.25rem;
+        font-size: clamp(1.25rem, 3.5vw, 1rem);
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-left: 4cm;
+        margin-top: 0.7cm;
+        }
+
+        .qty-input2 {
+        width: 4ch;
+        padding: 0.25rem;
+        font-size: clamp(1.25rem, 3.5vw, 1rem);
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-left: 4cm;
+        margin-top: 0.7cm;
+        }
         .order-controls {
           position: static;
           flex-direction: column;
