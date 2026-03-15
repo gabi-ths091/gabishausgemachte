@@ -329,13 +329,23 @@
           flex-direction: column;
           align-items: center;
           transform:none; /* stop shifting on small screens */
-          margin: 0 0 5cm 0;
+          margin-top: 1cm;
+        }
+
+        .section-title::after {
+        content: "";
+        display: block;
+        width: 350px;
+        height: 3px;
+        background-color: #670707; /* topbar color */
+        margin: 0.75rem auto 0;
         }
         .sorten-grid img {
           width: 100%;
           height: clamp(260px, 40vh, 520px);
           transform: rotate(90deg);
           align-items: center;
+          margin-left: 0.3cm;
         }
         .sorten-grid figcaption {
           width: 100%;
@@ -345,14 +355,16 @@
         }
         .caption-text1 {
           white-space: normal;
-          margin-top: 2cm;
+          font-size: clamp(2rem, 4.5vw, 2rem);
+          margin-top: 1cm;
           margin-left: 0.3cm;
           text-align: center;
         }
 
         .caption-text2 {
           white-space: normal;
-          margin-top: 2cm;
+          font-size: clamp(2rem, 4.5vw, 2rem);
+          margin-top: 1cm;
           margin-left: 0.3cm;
           text-align: center;
         }
@@ -366,14 +378,43 @@
 
         .price-text1 {
           position: static;
-          margin-left: 4cm;
+          margin-left: 0.4cm;
           margin-top: -1cm;
         }
 
         .price-text2 {
           position: static;
-          margin-left: 4cm;
+          margin-left: 0.4cm;
           margin-top: -1cm;
+        }
+        .qty-label1 {
+        margin-left: 3.5cm;
+        margin-top: -0.1cm;
+         }
+
+        .qty-label2 {
+        margin-left: 3.5cm;
+        margin-top: -0.1cm;
+        }
+
+        .qty-input1 {
+        width: 4ch;
+        padding: 0.25rem;
+        font-size: clamp(1.25rem, 3.5vw, 1rem);
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-left: 0.5cm;
+        margin-top: -0.2cm;
+        }
+
+        .qty-input2 {
+        width: 4ch;
+        padding: 0.25rem;
+        font-size: clamp(1.25rem, 3.5vw, 1rem);
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-left: 0.5cm;
+        margin-top: -0.2cm;
         }
 
         .order-controls {
