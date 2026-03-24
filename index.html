@@ -525,7 +525,10 @@
           transform: none;
           margin-top: 0.5rem;
         }
-      }
+     
+        }
+
+    
     </style>
   </head>
   <body>
@@ -605,15 +608,17 @@
       (function(){
         // Check if order was just submitted
         if(sessionStorage.getItem('orderSubmitted') === 'true'){
-          var successMsg = document.getElementById('successMessage');
-          successMsg.classList.add('show');
+
+          var msg = document.getElementById("successMessage");
+          msg.classList.add("show");
+
           
           // Hide message after 5 seconds
           setTimeout(function(){
-            successMsg.classList.remove('show');
+            msg.classList.remove('show');
             sessionStorage.removeItem('orderSubmitted');
             sessionStorage.removeItem('orderEmail');
-          }, 5000);
+          }, 4000);
         }
 
         // Update bottom summary as quantities change

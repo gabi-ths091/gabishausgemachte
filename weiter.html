@@ -56,7 +56,7 @@
         display: block;
       }
 
-      .card { max-width: 800px; margin: 2rem auto; padding: 1.5rem; border: 4px solid #670707; border-radius: 8px; background-color: #ffffff }
+      .card { max-width: 800px; margin: 2rem auto; padding: 1.5rem; border: 4px solid #670707; border-radius: 8px; background-color: #ffffff; }
       
       .form-section {
         margin-bottom: 1.5rem;
@@ -206,6 +206,13 @@
           </div>
         </div>
 
+         <div class="form-row">
+          <div class="form-group">
+            <label for="email">E-Mail *</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+           </div>
+          </div>
+
         <div class="two-column">
           <div class="form-section">
             <div class="section-title">Wann soll ich sie vorbeibringen? *</div>
@@ -260,6 +267,7 @@
           var savedStreet = localStorage.getItem('deliveryStreet');
           var savedCity = localStorage.getItem('deliveryCity');
           var savedPhone = localStorage.getItem('deliveryPhone');
+          var savedEmail = localStorage.getItem('deliveryEmail');
           
           if(savedStreet) street.value = savedStreet;
           if(savedCity) city.value = savedCity;
@@ -296,6 +304,7 @@
           var streetFilled = street.value.trim() !== '';
           var cityFilled = city.value.trim() !== '';
           var phoneFilled = phone.value.trim() !== '';
+          var emailFilled = document.getElementById('email').value.trim() !== '';
           var deliverySelected = Array.from(deliveryOptions).some(function(radio){ return radio.checked; });
           
           submitBtn.disabled = !(streetFilled && cityFilled && phoneFilled && deliverySelected);
@@ -314,6 +323,12 @@
           saveData();
           validateForm();
         });
+
+        email.addEventListener('input', function(){
+          saveData();
+          validateForm();
+        }); 
+
         Array.from(deliveryOptions).forEach(function(radio){
           radio.addEventListener('change', validateForm);
         });
@@ -340,6 +355,7 @@
             street: street.value,
             city: city.value,
             phone: phone.value,
+            email: email.value,
             delivery_time: selectedDelivery.value,
             notes: notes.trim() !== '' ? notes : 'Keine Anmerkungen'
           };
@@ -351,6 +367,16 @@
           // Send email using EmailJS
           emailjs.send('service_mr8t8f4', 'template_ldh9vpj', templateParams)
             .then(function(response) {
+
+          // Bestätigungsmail an Kunden
+           emailjs.send('service_yddwt7k','template_24vjf51',{
+            customer_email: document.getElementById("email").value,
+           order_items: orderSummary,
+           total_price: orderDetails.total.toFixed(2).replace('.',',') + '€',
+           street: street.value,
+          city: city.value,
+          delivery_time: selectedDelivery.value
+           });
               console.log('SUCCESS!', response.status, response.text);
               
               // Store success flag
